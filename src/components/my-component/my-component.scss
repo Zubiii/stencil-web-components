@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+.component-container {
+  padding: 16px;
+  /* background-color: cyan; */
+  border-radius: 8px;
+  border: 1px #465cff solid;
+}
+
+.title {
+  font-size: 24px;
+  color: #465cff;
+}
+
+.greeting {
+  font-size: 18px;
+}
+
+.center {
+  text-align: center;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
