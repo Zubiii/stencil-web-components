@@ -1,11 +1,10 @@
-import { Component, Prop, State, h } from '@stencil/core';
+import { Component, Prop, State, Watch, h } from '@stencil/core';
 import { format } from '../../utils/utils';
 
 @Component({
   tag: 'my-component',
   styleUrl: 'my-component.scss',
   shadow: true,
-  // scoped: true,
 })
 export class MyComponent {
   @Prop() first: string;
@@ -14,12 +13,26 @@ export class MyComponent {
 
   @State() userName: string = '';
   @State() userPhone: string = '';
-  @State() userAge: Number = undefined;
+  @State() userAge: number = undefined;
+
+  // Validation for Form
+  @State() isFormValidate: boolean = false;
+
+  // Steps
+  @State() isFormSubmit: boolean = false;
 
   private fieldNames = {
     userName: 'userName',
     userPhone: 'userPhone',
-    userAge: 'userAge'
+    userAge: 'userAge',
+  };
+
+  @Watch('userName')
+  @Watch('userPhone')
+  @Watch('userAge')
+  watchMultiple() {
+    if (this.userName.length > 3 && this.userPhone.length > 10 && this.userAge >= 18) this.isFormValidate = true;
+    else this.isFormValidate = false;
   }
 
   private getText(): string {
@@ -29,83 +42,79 @@ export class MyComponent {
   private handleEventValue(event: Event, field: string) {
     if (field === this.fieldNames.userName) {
       const input = event.target as HTMLInputElement;
-      console.log('event.target.value => ', input.value, field)
       this.userName = input.value;
-      return
+      return;
     }
 
     if (field === this.fieldNames.userPhone) {
       const input = event.target as HTMLInputElement;
-      console.log('event.target.value => ', input.value, field)
       this.userPhone = input.value;
-      return
+      return;
     }
 
     if (field === this.fieldNames.userAge) {
       const input = event.target as HTMLInputElement;
-      console.log('event.target.value => ', input.value, field)
       this.userAge = parseInt(input.value);
-      return
+      return;
     }
   }
 
   submit() {
     const payload = {
-      'userName' : this.userName,
-      'userPhone' : this.userPhone,
-      'userAge': this.userAge,
-    }
+      userName: this.userName,
+      userPhone: this.userPhone,
+      userAge: this.userAge,
+    };
 
-    console.log('payload => ', payload)
+    console.log('payload => ', payload);
+    this.isFormSubmit = true;
   }
 
   render() {
     return (
       <div class="component-container">
-        <h1 class="title center">Yo!!!</h1>
-        <div class="greeting center">Hello, World! I'm {this.getText()}.</div>
-        <div class="center mt-10">
+        {this.isFormSubmit ? (
           <div>
-            <label>
-              Name:
-              <input 
-                type="text" 
-                value={this.userName} 
-                placeholder="please enter your name!" 
-                onInput={event => this.handleEventValue(event, this.fieldNames.userName)} 
-              />
-            </label>
+            <h1 class="title center">Yo!!!</h1>
+            <div class="greeting center">Hello, {this.userName}! I'm {this.getText()}.</div>
           </div>
-          <div>
-            <label>
-              Phone:
-              <input 
-                type="number" 
-                value={this.userPhone} 
-                placeholder="+92XXXXXXX" 
-                onInput={event => this.handleEventValue(event, this.fieldNames.userPhone)}
-              />
-            </label>
+        ) : (
+          <div class="center mt-10">
+            <h1>Please enter your Details</h1>
+            <div class="mt-10">
+              <div>
+                <label>
+                  Name:
+                  <input type="text" value={this.userName} placeholder="please enter your name!" onInput={event => this.handleEventValue(event, this.fieldNames.userName)} />
+                </label>
+              </div>
+              {this.userName.length > 0 && this.userName.length < 3 && <span class="inputDescription">Please Enter at least 3 characters.</span>}
+            </div>
+            <div class="mt-10">
+              <div>
+                <label>
+                  Phone:
+                  <input type="number" value={this.userPhone} placeholder="+92XXXXXXX" onInput={event => this.handleEventValue(event, this.fieldNames.userPhone)} />
+                </label>
+              </div>
+              {this.userPhone.length > 0 && this.userPhone.length < 10 && <span class="inputDescription">Please Enter at least 11 characters.</span>}
+            </div>
+            <div class="mt-10">
+              <div>
+                <label>
+                  Age:
+                  <input type="number" placeholder="age" onInput={event => this.handleEventValue(event, this.fieldNames.userAge)} />
+                </label>
+              </div>
+              {this.userAge !== undefined && this.userAge < 18 && <span class="inputDescription">Age must be 18</span>}
+            </div>
+            <div>
+              <button class="mt-10 bg-black text-white" onClick={() => this.submit()} disabled={!this.isFormValidate}>
+                Submit
+              </button>
+            </div>
           </div>
-          <div>
-            <label>
-              Age:
-              <input 
-                type="number" 
-                placeholder="age" 
-                onInput={event => this.handleEventValue(event, this.fieldNames.userAge)} 
-              />
-            </label>
-          </div>
-          <div>
-            <button
-              class="mt-10"
-              onClick={() => this.submit()}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
+        )}
       </div>
     );
   }
