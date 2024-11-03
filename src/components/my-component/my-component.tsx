@@ -27,6 +27,7 @@ export class MyComponent {
     userAge: 'userAge',
   };
 
+  // Validation for Form
   @Watch('userName')
   @Watch('userPhone')
   @Watch('userAge')
@@ -72,7 +73,7 @@ export class MyComponent {
 
   render() {
     return (
-      <div class="component-container">
+      <div class={this.isFormSubmit? 'component-container bg-[#f0abfc]' : 'component-container'}>
         {this.isFormSubmit ? (
           <div>
             <h1 class="title center">Yo!!!</h1>

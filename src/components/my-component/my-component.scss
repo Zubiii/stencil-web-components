@@ -11,7 +11,7 @@ button {
   color: #fff;
   cursor: pointer;
   font-size: 14px;
-  border-radius: 8px;
+  border-radius: 4px;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 10px;
@@ -31,9 +31,13 @@ button:disabled {
 }
 
 input {
-  padding: 2px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
   margin: 2px;
   background-color: #efefef;
+  border-radius: 4px;
 }
 
 .component-container {
