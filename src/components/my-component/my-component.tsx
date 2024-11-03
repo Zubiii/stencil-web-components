@@ -76,10 +76,12 @@ export class MyComponent {
         {this.isFormSubmit ? (
           <div>
             <h1 class="title center">Yo!!!</h1>
-            <div class="greeting center">Hello, {this.userName}! I'm {this.getText()}.</div>
+            <div class="greeting center">
+              Hello, {this.userName}! I'm {this.getText()}.
+            </div>
           </div>
         ) : (
-          <div class="center mt-10">
+          <div class="center">
             <h1>Please enter your Details</h1>
             <div class="mt-10">
               <div>
@@ -90,7 +92,7 @@ export class MyComponent {
               </div>
               {this.userName.length > 0 && this.userName.length < 3 && <span class="inputDescription">Please Enter at least 3 characters.</span>}
             </div>
-            <div class="mt-10">
+            <div class="mt-2">
               <div>
                 <label>
                   Phone:
@@ -99,7 +101,7 @@ export class MyComponent {
               </div>
               {this.userPhone.length > 0 && this.userPhone.length < 10 && <span class="inputDescription">Please Enter at least 11 characters.</span>}
             </div>
-            <div class="mt-10">
+            <div class="mt-2">
               <div>
                 <label>
                   Age:
@@ -109,7 +111,7 @@ export class MyComponent {
               {this.userAge !== undefined && this.userAge < 18 && <span class="inputDescription">Age must be 18</span>}
             </div>
             <div>
-              <button class="mt-10 bg-black text-white" onClick={() => this.submit()} disabled={!this.isFormValidate}>
+              <button class="mt-5" onClick={() => this.submit()} disabled={!this.isFormValidate}>
                 Submit
               </button>
             </div>
